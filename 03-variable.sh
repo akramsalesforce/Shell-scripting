@@ -1,3 +1,7 @@
 #!/bin/bash
 
-echo "welcome back"
+a=100
+b=devops
+
+echo ${a}times
+echo $b training
