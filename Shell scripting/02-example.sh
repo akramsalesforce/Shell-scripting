@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-echo -e "\e[34mtesting\e*****************[0m"
+echo -e "\e[33mtesting\e[0m colour"
