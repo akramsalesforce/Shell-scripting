@@ -68,14 +68,11 @@ SERVICE_SETUP() {
 NODEJS() {
 
   Print "Configure Yum repos"
-  #curl -sL https://rpm.nodesource.com/setup_14.x  | bash  &>>${LOG_FILE}
-  curl -sL https://rpm.nodesource.com/setup_16.x | sudo bash - &>>${LOG_FILE}
+  curl -fsSL https://rpm.nodesource.com/setup_lts.x | bash - &>>${LOG_FILE}
   StatCheck $?
 
   Print "Install NodeJS"
-  #yum install nodejs gcc-c++ -y &>>${LOG_FILE}
-
-  yum install nodejs -y &>>${LOG_FILE}
+  yum install nodejs gcc-c++ -y &>>${LOG_FILE}
   StatCheck $?
 
   APP_SETUP
