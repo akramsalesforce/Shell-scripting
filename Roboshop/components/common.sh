@@ -72,7 +72,7 @@ NODEJS() {
   StatCheck $?
 
   Print "Install NodeJS"
-  yum install nodejs gcc-c++ -y &>>${LOG_FILE}
+  yum yum install nodejs -y &>>${LOG_FILE}
   StatCheck $?
 
   APP_SETUP
