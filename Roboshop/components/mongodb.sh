@@ -31,7 +31,7 @@ cd /tmp && unzip -o mongodb.zip >>${LOG_FILE}
 statusCheck $?
 
 cd mongodb-main
-print "Load Schema"
+print "Load Schema example"
 for component in catalogue users ; do
 mongo < ${component}.js >>${LOG_FILE}
 done
