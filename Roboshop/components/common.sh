@@ -68,7 +68,9 @@ SERVICE_SETUP() {
 NODEJS() {
 
   Print "Configure Yum repos"
-  curl -fsSL https://rpm.nodesource.com/setup_lts.x | bash - &>>${LOG_FILE}
+  #curl -fsSL https://rpm.nodesource.com/setup_lts.x | bash - &>>${LOG_FILE}
+
+  curl --silent --location https://rpm.nodesource.com/setup_16.x | sudo bash - &>>${LOG_FILE}
   StatCheck $?
 
   Print "Install NodeJS"
