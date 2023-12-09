@@ -42,7 +42,6 @@ APP_SETUP() {
   StatCheck $?
 }
 
-
 SERVICE_SETUP() {
   Print "Fix App User Permissions"
   chown -R ${APP_USER}:${APP_USER} /home/${APP_USER}
@@ -66,7 +65,6 @@ SERVICE_SETUP() {
   StatCheck $?
 }
 
-
 NODEJS() {
 
   Print "Configure Yum repos"
@@ -87,3 +85,32 @@ NODEJS() {
 
 }
 
+MAVEN() {
+  Print "Install Maven"
+  yum install maven -y &>>${LOG_FILE}
+  StatCheck $?
+
+  APP_SETUP
+
+  Print "Maven Packaging"
+  cd /home/${APP_USER}/${COMPONENT} &&  mvn clean package &>>${LOG_FILE} && mv target/shipping-1.0.jar shipping.jar &>>${LOG_FILE}
+  StatCheck $?
+
+  SERVICE_SETUP
+
+}
+
+PYTHON() {
+
+  Print "Install Python"
+  yum install python36 gcc python3-devel -y &>>${LOG_FILE}
+  StatCheck $?
+
+  APP_SETUP
+
+  Print "Install Python Dependencies"
+  cd /home/${APP_USER}/${COMPONENT} && pip3 install -r requirements.txt &>>${LOG_FILE}
+  StatCheck $?
+
+  SERVICE_SETUP
+}
