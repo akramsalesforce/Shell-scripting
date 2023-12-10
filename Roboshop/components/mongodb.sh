@@ -29,8 +29,8 @@ StatCheck $?
 
 Print "Load Schema"
 cd mongodb-main
-for schema in catalogue users; do
-  echo "Load $schema Schema"
-  mongo < ${schema}.js &>>$LOG_FILE
-  StatCheck $?
+echo "Load Schema"
+for component in catalogue users ; do
+mongo < ${component}.js &>>${LOG_FILE}
 done
+StatCheck $?
