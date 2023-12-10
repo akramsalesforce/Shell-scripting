@@ -1,36 +1,35 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 source components/common.sh
+checkRootUser
 
-Print "Installing Nginx"
-yum install nginx -y &>>$LOG_FILE
-StatCheck $?
+ECHO "Setup MongoDB Yum repo"
+curl -s -o /etc/yum.repos.d/mongodb.repo https://raw.githubusercontent.com/roboshop-devops-project/mongodb/main/mongo.repo &>>${LOG_FILE}
+statusCheck $?
 
-Print "Downloading Nginx Content"
-curl -f -s -L -o /tmp/frontend.zip "https://github.com/roboshop-devops-project/frontend/archive/main.zip" &>>$LOG_FILE
-StatCheck $?
+ECHO "Installing MongoDB"
+yum install -y mongodb-org  &>>${LOG_FILE}
+statusCheck $?
 
-Print "Cleanup Old Nginx Content"
-rm -rf /usr/share/nginx/html/* &>>$LOG_FILE
-StatCheck $?
+ECHO "Configure Listen Address in MonogBD Configuration"
+sed -i -e 's/127.0.0.1/0.0.0.0/' /etc/mongod.conf
+statusCheck $?
 
-cd /usr/share/nginx/html/
+ECHO "Start MongoDB Service"
+systemctl restart mongod &>>${LOG_FILE} && systemctl enable mongod >>${LOG_FILE}
+statusCheck $?
 
-Print "Extracting Archive"
-unzip /tmp/frontend.zip &>>$LOG_FILE  && mv frontend-main/* . &>>$LOG_FILE  && mv static/* &>>$LOG_FILE .
-StatCheck $?
+ECHO "Download Schema"
+curl -s -L -o /tmp/mongodb.zip "https://github.com/roboshop-devops-project/mongodb/archive/main.zip"  >>${LOG_FILE}
+statusCheck $?
 
+ECHO "Extract Schema Zip"
+cd /tmp && unzip -o mongodb.zip >>${LOG_FILE}
+statusCheck $?
 
-Print "Update RoboShop Configuration"
-mv localhost.conf /etc/nginx/default.d/roboshop.conf &>>$LOG_FILE
-for component in catalogue user cart shipping ; do
-  echo -e "Updating $component in Configuration"
-  sed -i -e "/${component}/s/localhost/${component}.awsdevops.tech/"  /etc/nginx/default.d/roboshop.conf
-  StatCheck $?
+cd mongodb-main
+ECHO "Load Schema"
+for component in catalogue users ; do
+mongo < ${component}.js >>${LOG_FILE}
 done
-
-
-Print "Starting Nginx"
-systemctl restart nginx &>>$LOG_FILE  && systemctl enable nginx &>>$LOG_FILE
-StatCheck $?
-
+statusCheck $?
