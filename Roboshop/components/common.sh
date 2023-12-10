@@ -49,6 +49,7 @@ SERVICE_SETUP() {
 
   Print "configure SystemD File"
     sed -i  -e 's/MONGO_DNSNAME/mongodb.awsdevops.tech/' \
+            -e 's/REDIS_ENDPOINT/redis.roboshop.internal/' \
             -e 's/MONGO_ENDPOINT/mongodb.awsdevops.tech/' \
             -e 's/CATALOGUE_ENDPOINT/catalogue.awsdevops.tech/' \
             /home/roboshop/${COMPONENT}/systemd.service &>>${LOG_FILE}
