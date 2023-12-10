@@ -62,7 +62,7 @@ SERVICE_SETUP() {
 
   Print "Setup SystemD Service"
    mv /home/roboshop/${COMPONENT}/systemd.service /etc/systemd/system/${COMPONENT}.service
-  Print "Restart ${COMPONENT} Service"
+  echo "Restart ${COMPONENT} Service"
     systemctl daemon-reload &>>${LOG_FILE} && systemctl enable ${COMPONENT} &>>${LOG_FILE} && systemctl restart ${COMPONENT} &>>${LOG_FILE}
     StatCheck $?
 }
@@ -70,8 +70,12 @@ SERVICE_SETUP() {
 NODEJS() {
 
   Print "Configure Yum repos"
-  curl -fsSL https://rpm.nodesource.com/setup_lts.x | bash - &>>${LOG_FILE}
-  StatCheck $?
+  #curl -fsSL https://rpm.nodesource.com/setup_lts.x | bash - &>>${LOG_FILE}
+  #StatCheck $?
+curl -sL https://rpm.nodesource.com/setup_lts.x | bash  &>>${LOG_FILE}
+#curl -sL https://rpm.nodesource.com/setup_lts.x | bash - &>>${LOG_FILE}
+yum install nodejs -y
+StatCheck $?
 
   Print "Install NodeJS"
   yum install nodejs gcc-c++ -y &>>${LOG_FILE}
