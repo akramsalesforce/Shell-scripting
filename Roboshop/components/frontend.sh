@@ -33,7 +33,7 @@ statusCheck $?
 ECHO "Update Nginx Configuration"
 for component in catalogue  ; do
   ECHO "Update Configuration for ${component}"
-  sed -i -e "/${component}/ s/localhost/${component}.roboshop.internal/"  /etc/nginx/default.d/roboshop.conf
+  sed -i -e "/${component}/ s/localhost/${component}.awsdevops.tech/"  /etc/nginx/default.d/roboshop.conf
   statusCheck $?
 done
 
