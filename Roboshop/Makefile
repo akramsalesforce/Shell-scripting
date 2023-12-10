@@ -12,3 +12,5 @@ cart:
 	bash components/cart.sh
 mysql:
 	bash components/mysql.sh
+mysql:
+	bash components/shipping.sh
