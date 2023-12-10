@@ -47,17 +47,19 @@ SERVICE_SETUP() {
   chown -R ${APP_USER}:${APP_USER} /home/${APP_USER}
   StatCheck $?
 
-  Print "Setup SystemD File"
-  sed -i  -e 's/MONGO_DNSNAME/mongodb.awsdevops.tech/' \
-          -e 's/MONGO_ENDPOINT/mongodb.awsdevops.tech/' \
-          -e 's/CATALOGUE_ENDPOINT/catalogue.awsdevops.tech/' \
+  Print "configure SystemD File"
+    sed -i  -e 's/MONGO_DNSNAME/mongodb.awsdevops.tech/' \
+            -e 's/MONGO_ENDPOINT/mongodb.awsdevops.tech/' \
+            -e 's/CATALOGUE_ENDPOINT/catalogue.awsdevops.tech/' \
+            /home/roboshop/${COMPONENT}/systemd.service &>>${LOG_FILE}
 
-          /home/roboshop/${COMPONENT}/systemd.service &>>${LOG_FILE} && mv /home/roboshop/${COMPONENT}/systemd.service /etc/systemd/system/${COMPONENT}.service  &>>${LOG_FILE}
-  StatCheck $?
 
+
+  Print "Setup SystemD Service"
+   mv /home/roboshop/${COMPONENT}/systemd.service /etc/systemd/system/${COMPONENT}.service
   Print "Restart ${COMPONENT} Service"
-  systemctl daemon-reload &>>${LOG_FILE} && systemctl restart ${COMPONENT} &>>${LOG_FILE} && systemctl enable ${COMPONENT} &>>${LOG_FILE}
-  StatCheck $?
+    systemctl daemon-reload &>>${LOG_FILE} && systemctl enable ${COMPONENT} &>>${LOG_FILE} && systemctl restart ${COMPONENT} &>>${LOG_FILE}
+    StatCheck $?
 }
 
 NODEJS() {
