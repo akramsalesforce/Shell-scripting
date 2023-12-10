@@ -54,6 +54,8 @@ SERVICE_SETUP() {
             -e 's/CATALOGUE_ENDPOINT/catalogue.awsdevops.tech/' \
             -e 's/USERHOST/user.awsdevops.tech/' \
             -e 's/USERHOST/cart.awsdevops.tech/' \
+            -e 's/DBHOST/mysql.awsdevops.tech/' \
+            -e 's/CARTHOST/cart.awsdevops.tech/' \
             /home/roboshop/${COMPONENT}/systemd.service &>>${LOG_FILE}
 
 
