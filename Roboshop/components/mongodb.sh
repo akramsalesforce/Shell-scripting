@@ -24,5 +24,10 @@ curl -s -L -o /tmp/mongodb.zip "https://github.com/roboshop-devops-project/mongo
 StatCheck $?
 
 Print "Load Schema"
-cd /tmp && unzip -o mongodb.zip &>>${LOG_FILE}  && cd mongodb-main && mongo < catalogue.js &>>${LOG_FILE}  && mongo < users.js &>>${LOG_FILE}
-StatCheck $?
+cd mongodb-main
+#for schema in catalogue users; do
+for schema in catalogue ; do
+  echo "Load $schema Schema"
+  mongo < ${schema}.js &>>$LOG_FILE
+  StatCheck $?
+done
