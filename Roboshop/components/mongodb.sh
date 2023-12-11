@@ -29,7 +29,7 @@ statusCheck $?
 
 cd mongodb-main
 ECHO "Load Schema"
-for component in catalogue users ; do
+for component in catalogue ; do
 mongo < ${component}.js >>${LOG_FILE}
 done
 statusCheck $?
