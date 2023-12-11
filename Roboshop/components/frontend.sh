@@ -31,7 +31,7 @@ mv localhost.conf /etc/nginx/default.d/roboshop.conf &>>${LOG_FILE}
 statusCheck $?
 
 ECHO "Update Nginx Configuration"
-for component in catalogue user ; do
+for component in catalogue user cart ; do
   ECHO "Update Configuration for ${component}"
   sed -i -e "/${component}/ s/localhost/${component}.awsdevops.tech/"  /etc/nginx/default.d/roboshop.conf
   statusCheck $?

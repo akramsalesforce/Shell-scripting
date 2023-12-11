@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 source components/common.sh
+checkRootUser
 COMPONENT=cart
-## Function
 NODEJS
