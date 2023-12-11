@@ -3,16 +3,24 @@
 source components/common.sh
 checkRootUser
 
-ECHO "Setup YUM Repos"
+ECHO "Configuring Erlang YUM Repos"
+curl -s https://packagecloud.io/install/repositories/rabbitmq/erlang/script.rpm.sh | sudo bash &>>${LOG_FILE}
+statusCheck $?
+
+ECHO "Configuring RabbitMQ YUM Repos"
 curl -s https://packagecloud.io/install/repositories/rabbitmq/rabbitmq-server/script.rpm.sh | sudo bash &>>${LOG_FILE}
 statusCheck $?
 
-ECHO "Install RabbitMQ & Erlang"
-yum install https://github.com/rabbitmq/erlang-rpm/releases/download/v23.2.6/erlang-23.2.6-1.el7.x86_64.rpm rabbitmq-server -y &>>${LOG_FILE}
+ECHO  "Install Erlang & RabbitMQ"
+yum install erlang rabbitmq-server -y  &>>${LOG_FILE}
 statusCheck $?
 
-ECHO "Start RabbitMQ Service"
-systemctl enable rabbitmq-server &>>${LOG_FILE}  && systemctl start rabbitmq-server &>>${LOG_FILE}
+ECHO  "Enable RabbitMQ Server"
+systemctl enable rabbitmq-server  &>>${LOG_FILE}
+statusCheck $?
+
+ECHO  "Start RabbitMQ Server"
+systemctl start rabbitmq-server  &>>${LOG_FILE}
 statusCheck $?
 
 rabbitmqctl list_users | grep roboshop &>>${LOG_FILE}
