@@ -16,3 +16,6 @@ shipping:
 	bash components/shipping.sh
 payment:
 	bash components/payment.sh
+
+RabbitMQ:
+	bash components/RabbitMQ.sh
